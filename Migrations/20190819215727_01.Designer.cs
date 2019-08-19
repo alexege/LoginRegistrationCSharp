@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoginRegistration.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20190816233838_Migration01")]
-    partial class Migration01
+    [Migration("20190819215727_01")]
+    partial class _01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace LoginRegistration.Migrations
 
             modelBuilder.Entity("LoginRegistration.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Confirm_Password");
@@ -37,7 +37,7 @@ namespace LoginRegistration.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });

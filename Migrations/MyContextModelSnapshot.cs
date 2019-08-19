@@ -18,7 +18,7 @@ namespace LoginRegistration.Migrations
 
             modelBuilder.Entity("LoginRegistration.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Confirm_Password");
@@ -35,7 +35,7 @@ namespace LoginRegistration.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });

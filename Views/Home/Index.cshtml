@@ -2,40 +2,54 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model User
+@model LogRegModel
 
 <div class="row">
-    <h1>Register to this Cool Site!</h1> 
-    <a asp-action="Login" asp-controller="Home">Login</a>
+    <h1>Login / Registration!</h1> 
 </div>
 
-<form asp-action="Register" asp-controller="Home" method="post">
-    <span asp-validation-for="First_Name"></span>
-    <br>
+<h2>Login</h2>
+<form asp-action="Login" method="post">
     <div class="form-group">
-        <label asp-for="First_Name"></label>
-        <input class="form-control" asp-for="First_Name">
+        <label asp-for="LogUser.LogEmail"></label>
+        <input class="form-control" asp-for="LogUser.LogEmail">
+        <span class="error" asp-validation-for="LogUser.LogEmail"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="LogUser.LogPassword"></label>
+        <input class="form-control" type="password" asp-for="LogUser.LogPassword">
+        <span class="error" asp-validation-for="LogUser.LogPassword"></span>
+    </div>
+    <button class="btn btn-primary">Login</button>
+</form>
 
-    <span asp-validation-for="Last_Name"></span>
-    <br>
-    <label asp-for="Last_Name"></label>
-    <input class="form-control" asp-for="Last_Name">
+<br><br>
 
-    <span asp-validation-for="Email"></span>
+<h2>Register</h2>
+<form asp-action="Register" asp-controller="Home" method="post">
+    <label asp-for="RegUser.First_Name"></label>
+    <input class="form-control" asp-for="RegUser.First_Name">
+    <span class="error" asp-validation-for="RegUser.First_Name"></span>
     <br>
-    <label asp-for="Email"></label>
-    <input class="form-control" asp-for="Email">
 
-    <span asp-validation-for="Password"></span>
+    <label asp-for="RegUser.Last_Name"></label>
+    <input class="form-control" asp-for="RegUser.Last_Name">
+    <span class="error" asp-validation-for="RegUser.Last_Name"></span>
     <br>
-    <label asp-for="Password"></label>
-    <input class="form-control" asp-for="Password">
 
-    <span asp-validation-for="Confirm_Password"></span>
+    <label asp-for="RegUser.Email"></label>
+    <input class="form-control" asp-for="RegUser.Email">
+    <span class="error" asp-validation-for="RegUser.Email"></span>
     <br>
-    <label asp-for="Confirm_Password"></label>
-    <input class="form-control" asp-for="Confirm_Password">
+
+    <label asp-for="RegUser.Password"></label>
+    <input class="form-control" asp-for="RegUser.Password">
+    <span class="error" asp-validation-for="RegUser.Password"></span>
+    <br>
+
+    <label asp-for="RegUser.Confirm_Password"></label>
+    <input class="form-control" asp-for="RegUser.Confirm_Password">
+    <span class="error" asp-validation-for="RegUser.Confirm_Password"></span>
     <br>
     <button class="btn btn-primary">Sign Up</button>
 </form>

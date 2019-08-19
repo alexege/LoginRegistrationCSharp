@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LoginRegistration.Models;
 
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
@@ -27,64 +26,71 @@ namespace LoginRegistration.Controllers
             return View();
         }
 
-        public IActionResult Register(User newUser)
+        public IActionResult Register(LogRegModel model)
         {
+            User newUser = model.RegUser;
             //Input fields correct
             if(ModelState.IsValid){
 
-                //If User already exists, redirect back to index.
-                if(dbContext.Users.Any(user => user.Email == newUser.Email))
+                bool notUnique = dbContext.Users.Any(a => a.Email == newUser.Email);
+
+                if(notUnique)
                 {
-                    ModelState.AddModelError("Email", "Email already in use");
+                    ModelState.AddModelError("Email", "Email already exists, please try a new one");
                     return View("Index");
-                } else {
-                    PasswordHasher<User> hasher = new PasswordHasher<User>();
-                    string hashed_password = hasher.HashPassword(newUser, newUser.Password);
-                    newUser.Password = hashed_password;
-
-                    dbContext.Users.Add(newUser);
-                    dbContext.SaveChanges();
-
-                    //Place user's id in session
-                    HttpContext.Session.SetInt32("id", dbContext.Users.Last().Id);
-
-                    return RedirectToAction("Dashboard");
                 }
-            } else {
 
-                //Form not valid, redirect to Index page to show errors.
-                return View("Index");
-            }
+                // Hash user's password
+                PasswordHasher<User> hasher = new PasswordHasher<User>();
+                string hash = hasher.HashPassword(newUser, newUser.Password);
+                newUser.Password = hash;
+
+                //Add user to database
+                dbContext.Users.Add(newUser);
+                dbContext.SaveChanges();
+                return RedirectToAction("Success");
+                }
+            //Form not valid, redirect to Index page to show errors.
+            return View("Index");
+        }
+
+        [HttpGet("success")]
+        public string Success()
+        {
+            return "Success";
         }
 
         [HttpPost("login")]
-        public IActionResult Login(LogUser entered_user)
+        public IActionResult Login(LogRegModel model)
         {
+            LogUser user = model.LogUser;
             if(ModelState.IsValid){
+
                 //check to see if user exists in db
-                var user_exists = dbContext.Users.FirstOrDefault(user => user.Email == entered_user.Email);
+                User check_user_exists = dbContext.Users.FirstOrDefault(u => u.Email == user.LogEmail);
                 
                 //If user not in db
-                if(user_exists == null){
-                    ModelState.AddModelError("Email", "Invalid Email address or Password");
-                    return View("Login");
+                if(check_user_exists == null){
+                    ModelState.AddModelError("LogUser.LogEmail", "Invalid Email address or Password");
+                    return View("Index");
                 }
 
                 //Compare hashed password to confirmation password
-                var checkHash = new PasswordHasher<LogUser>();
-                var verified_user = checkHash.VerifyHashedPassword(entered_user, user_exists.Password, entered_user.Password);
+                PasswordHasher<LogUser> checkHash = new PasswordHasher<LogUser>();
+                var verified_user = checkHash.VerifyHashedPassword(user, check_user_exists.Password, user.LogPassword);
 
                 //If user cannot be verified
                 if(verified_user == 0){
-                    return View("Login");
+                    ModelState.AddModelError("LogUser.LogEmail", "Invalid Email/Password");
+                    return View("Index");
                 }
 
                 //Place logged in user's id in session.
-                HttpContext.Session.SetInt32("id", dbContext.Users.Last().Id);
-                return RedirectToAction("Dashboard");
-            } else {
-                return View("Login");
+                HttpContext.Session.SetInt32("id",check_user_exists.UserId);
+
+                return RedirectToAction("Success");
             }
+            return View("Index");
         }
 
         [HttpGet("Dashboard")]
@@ -93,10 +99,14 @@ namespace LoginRegistration.Controllers
             // Grab current user id from session
             int? UserId = HttpContext.Session.GetInt32("id");
 
+            // Grab entire user based on session id
+            var user = dbContext.Users.FirstOrDefault(u => u.UserId == UserId);
+
             if(UserId == null){
-                return View("Login");
+                return View("Index");
             } else {
-                return View("Dashboard", UserId);
+                return View("Dashboard", user);
+                // return View("Dashboard", UserId);
             }
         }
 

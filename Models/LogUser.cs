@@ -7,10 +7,10 @@ namespace LoginRegistration.Models
     {
         [Required(ErrorMessage = "Email required")]
         [EmailAddress(ErrorMessage = "Enter a valid email address")]
-        public string Email {get; set;}
+        public string LogEmail {get; set;}
 
         [Required(ErrorMessage = "Password Required")]
         [MinLength(8, ErrorMessage = "Must be at least 8 characters")]
-        public string Password {get; set;}
+        public string LogPassword {get; set;}
     }
 }

@@ -29,3 +29,4 @@ C:\Users\alexe\Documents\CodingDojo\CSharp\MVC\LoginRegistration\bin\Debug\netco
 C:\Users\alexe\Documents\CodingDojo\CSharp\MVC\LoginRegistration\obj\Debug\netcoreapp2.2\LoginRegistration.Views.pdb
 C:\Users\alexe\Documents\CodingDojo\CSharp\MVC\LoginRegistration\obj\Debug\netcoreapp2.2\LoginRegistration.csproj.CopyComplete
 C:\Users\alexe\Documents\CodingDojo\CSharp\MVC\LoginRegistration\obj\Debug\netcoreapp2.2\Razor\Views\Home\Dashboard.g.cshtml.cs
+C:\Users\alexe\Documents\CodingDojo\CSharp\MVC\LoginRegistration\obj\Debug\netcoreapp2.2\Razor\Views\Home\Login.g.cshtml.cs
